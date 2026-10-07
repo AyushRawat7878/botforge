@@ -31,7 +31,7 @@ A website where people **make their own AI chatbots**. You give a bot a name, an
 | | **httpx** | Calls the AI API from the backend | Supports `async`, so the server doesn't freeze while waiting |
 | AI | **Any OpenAI-compatible API** (Groq by default) | Writes the bot's replies | Groq and Gemini have free tiers; switch by editing `.env` |
 | | **Pollinations.ai** | Makes the pictures | Free, no API key |
-| Testing | **pytest** | 5 automated tests for the backend | Checks login, privacy rules, memory, images |
+| Testing | **pytest** | 6 automated tests for the backend | Checks login, privacy rules, memory, images, AI errors |
 
 ---
 
@@ -176,7 +176,9 @@ You need **Python 3.10+** and **Node.js 18+**.
 1. Double-click `start-backend.bat` (the first time it installs everything).
 2. Double-click `start-frontend.bat`.
 3. Open **http://localhost:5173**.
-4. For real AI replies: get a free key at console.groq.com, open `backend\.env`, set `LLM_API_KEY=your-key`, and restart the backend.
+4. For real AI replies: get a free key at console.groq.com, open `backend\.env`, paste it after `LLM_API_KEY=`, and restart the backend.
+
+**Free plan limits:** Groq allows about 30 messages a minute and 1,000 a day. If someone goes over, the bot shows "too many messages right now, please wait a minute" instead of crashing. Online, the key goes in the hosting site's environment variables, never in GitHub.
 
 Extra: the API docs are at **http://127.0.0.1:8000/docs**. Run the tests with `cd backend` then `pytest`.
 

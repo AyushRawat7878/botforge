@@ -94,8 +94,13 @@ async def generate_reply(bot: Bot, history: list[Message]) -> BotReply:
             resp = await client.post(f"{settings.llm_base_url}/chat/completions", json=payload, headers=headers)
     except httpx.HTTPError as exc:
         raise LLMError(f"Could not reach the LLM API: {exc}") from exc
+    if resp.status_code == 429:
+        # Free plans allow a limited number of messages per minute/day.
+        raise LLMError("The bot is getting too many messages right now. Please wait a minute and try again.")
+    if resp.status_code in (401, 403):
+        raise LLMError("The AI service rejected the API key. Check LLM_API_KEY in backend/.env.")
     if resp.status_code != 200:
-        raise LLMError(f"LLM API returned {resp.status_code}: {resp.text[:300]}")
+        raise LLMError(f"The AI service had a problem (error {resp.status_code}). Please try again.")
     try:
         raw = resp.json()["choices"][0]["message"]["content"] or ""
     except (KeyError, IndexError, ValueError) as exc:

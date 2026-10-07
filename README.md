@@ -95,6 +95,16 @@ npm run dev
 ```
 </details>
 
+### Free AI key (Groq)
+
+The bots use [Groq](https://console.groq.com), which has a free plan (no card needed) of roughly 30 messages a minute and 1,000 a day.
+
+1. Sign in at **console.groq.com** and open **API Keys → Create API Key**.
+2. Copy the key and paste it into `backend/.env` after `LLM_API_KEY=`.
+3. Restart the backend. `http://127.0.0.1:8000/api/health` should now show `"demo_mode": false`.
+
+When you put the app online, don't upload `.env` (it's already in `.gitignore`). Add `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_MODEL` and `SECRET_KEY` as **environment variables** in your hosting dashboard instead.
+
 Interactive API docs are at **http://127.0.0.1:8000/docs**.
 
 ## Tests

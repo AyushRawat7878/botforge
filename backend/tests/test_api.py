@@ -82,3 +82,35 @@ def test_parse_reply():
     assert r.text == "Sure!" and "a%20red%20fox%20in%20snow" in r.image_url
     r = parse_reply("[IMAGE: a fox]", allow_images=False)
     assert r.image_url is None
+
+
+def test_friendly_llm_errors(monkeypatch):
+    import asyncio
+
+    import httpx
+
+    from app import llm
+    from app.models import Bot
+
+    class FakeClient:
+        def __init__(self, status):
+            self.status = status
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *a):
+            return False
+
+        async def post(self, *a, **k):
+            return httpx.Response(self.status, text="nope")
+
+    monkeypatch.setattr(llm.settings, "llm_api_key", "test-key")
+    bot = Bot(name="T", system_prompt="hi", image_replies=False)
+    for status, words in [(429, "too many messages"), (401, "API key"), (500, "error 500")]:
+        monkeypatch.setattr(llm.httpx, "AsyncClient", lambda *a, s=status, **k: FakeClient(s))
+        try:
+            asyncio.run(llm.generate_reply(bot, []))
+            raise AssertionError("expected LLMError")
+        except llm.LLMError as e:
+            assert words in str(e)

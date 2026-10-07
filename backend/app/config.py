@@ -14,7 +14,7 @@ class Settings:
 
     llm_api_key: str = os.getenv("LLM_API_KEY", "").strip()
     llm_base_url: str = os.getenv("LLM_BASE_URL", "https://api.groq.com/openai/v1").rstrip("/")
-    llm_model: str = os.getenv("LLM_MODEL", "llama-3.3-70b-versatile")
+    llm_model: str = os.getenv("LLM_MODEL", "openai/gpt-oss-120b")
     memory_messages: int = int(os.getenv("MEMORY_MESSAGES", "20"))
 
     image_base_url: str = os.getenv("IMAGE_BASE_URL", "https://image.pollinations.ai/prompt").rstrip("/")
