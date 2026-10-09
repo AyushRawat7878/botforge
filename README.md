@@ -135,3 +135,7 @@ Tests cover registration/login, private vs public bot access, hidden system prom
 Each time you send a message, the backend loads the bot's system prompt plus the last `MEMORY_MESSAGES` messages of that conversation and sends them to the model, so the bot "remembers" what was said earlier.
 
 For images, the system prompt tells the model it may add a line like `[IMAGE: a bowl of butter chicken, food photography]`. The backend strips that line from the text, turns the description into a Pollinations.ai image URL, and saves it with the message. The frontend shows it under the reply.
+
+## Author
+
+**Ayush Rawat** · [GitHub](https://github.com/AyushRawat7878)
